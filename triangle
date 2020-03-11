@@ -1,0 +1,46 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+//按照一个大圆和周边的四个区域的方法以及在此基础上进一步细分来计算 
+
+void FourCir(double r[100], double x[100], double y[100], double a[100]) //计算x,y的坐标 
+{
+	r[0] = 0.5;
+	a[0] = 1.0;
+	x[0] = -0.5; y[0] = 0.5;
+	for (int i = 1; i <= 99; i = i + 4)
+	{
+		for (int j = 0; j <= 4; j++)   
+
+		{
+			r[i + j] = 0.5 * a[i-1] - sqrt(2) / 2 * r[i - 1];
+			a[i + j] = 2 * r[i + j];
+		}
+		x[i] = -r[i];	      y[i] = r[i];
+		x[i + 1] = -r[i];     y[i + 1] = 1 - r[i];
+		x[i + 2] = r[i] - 1;  y[i + 2] = r[i];
+		x[i + 3] = r[i] - 1;  y[i + 3] = 1 - r[i];
+	}
+}
+
+int main()
+{
+	double r[100],  x[100],  y[100],  a[100];
+	FourCir(r,x,y,a);
+	int m;
+	cout << "请输入m的值:"<<endl;
+	cin >> m;
+	for (int k = 0; k < m; k++)
+	{
+		cout << "第" << k + 1 << "个圆的半径是 " << r[k] << ",横坐标为 " << x[k] << ",纵坐标为" << y[k] << endl;
+	}
+	double sum = 0;
+	int h; 
+	for (h = 0; h < m; h++)
+	{
+		sum += pow(r[h], 2);
+	}
+	cout << "r^2的总和是" << sum;
+	return 0;
+}
